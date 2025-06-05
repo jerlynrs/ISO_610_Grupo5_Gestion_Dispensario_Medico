@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Usuario</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body style="background-color: var(--azul-claro);">
+  <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card p-4 registro-card" style="width: 100%; max-width: 400px;">
+      <h3 class="text-center text-primary mb-4">Crear Cuenta</h3>
+      <form method="POST" action="/registro">
+        <div class="form-group">
+          <label for="username">Usuario</label>
+          <input type="text" name="username" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" name="password" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-success btn-block">Registrar</button>
+        <div class="text-center mt-3">
+          <a href="{{ url_for('login') }}">Ya tengo cuenta</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

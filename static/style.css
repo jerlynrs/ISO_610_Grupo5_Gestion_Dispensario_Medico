@@ -1,0 +1,98 @@
+ /* Colores personalizados */
+    :root {
+      --azul-claro: #e3f2fd;
+      --azul-medio: #64b5f6;
+      --azul-oscuro: #1976d2;
+      --gris-claro: #f8f9fa;
+    }
+
+    body {
+      background-color: var(--gris-claro);
+    }
+
+    /* Navbar */
+    .navbar-custom {
+      background-color: var(--azul-oscuro);
+    }
+    .navbar-custom .navbar-brand,
+    .navbar-custom .navbar-nav .nav-link {
+      color: #fff;
+    }
+    .navbar-custom .navbar-nav .nav-link:hover {
+      color: var(--gris-claro);
+    }
+
+    /* Hero */
+    .hero {
+      background-color: var(--azul-claro);
+      padding: 4rem 0;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      color: var(--azul-oscuro);
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--azul-medio);
+    }
+
+    /* Sección de servicios */
+    .service-card {
+      border: none;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .service-card .card-body {
+      text-align: center;
+    }
+    .service-card .icon {
+      font-size: 2rem;
+      color: var(--azul-oscuro);
+    }
+    .service-card h5 {
+      margin-top: 1rem;
+      color: var(--azul-oscuro);
+    }
+
+    /* Formulario */
+    .registro-card {
+      border: none;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .registro-card .card-header {
+      background-color: var(--azul-medio);
+      color: #fff;
+      font-weight: 500;
+      text-align: center;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+    .registro-card .form-control:focus {
+      box-shadow: none;
+      border-color: var(--azul-oscuro);
+    }
+    .btn-primary-custom {
+      background-color: var(--azul-oscuro);
+      border-color: var(--azul-oscuro);
+    }
+    .btn-primary-custom:hover {
+      background-color: #115293;
+      border-color: #115293;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--azul-oscuro);
+      color: #fff;
+      padding: 2rem 0;
+    }
+    footer a {
+      color: #fff;
+    }
+    footer a:hover {
+      color: var(--gris-claro);
+      text-decoration: none;
+    }

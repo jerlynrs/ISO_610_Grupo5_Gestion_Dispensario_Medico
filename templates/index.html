@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gestión Dispensario Médico</title>
+
+<!-- Bootstrap CSS -->
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+/>
+
+<!-- Tu CSS personalizado -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    
+    <div class="container">
+      <a class="navbar-brand" href="#">Dispensario APEC</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+      >
+        <span class="navbar-toggler-icon" style="color: #fff;">☰</span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#servicios">Servicios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#registro">Registrar Paciente</a>
+          </li>
+          <li>
+            <a class="nav-link" href="login">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero text-center">
+    <div class="container">
+      <h1>Bienvenido al Dispensario Médico</h1>
+      <p>Gestiona pacientes, medicamentos y visitas de forma rápida y segura.</p>
+      <a href="#registro" class="btn btn-primary btn-lg btn-primary-custom">Registrar Paciente</a>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+  <section id="servicios" class="py-5">
+    <div class="container">
+      <div class="row text-center mb-4">
+        <div class="col-12">
+          <h2 class="text-uppercase" style="color: var(--azul-oscuro);">Nuestros Servicios</h2>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Servicio 1 -->
+        <div class="col-md-4 mb-4">
+          <div class="card service-card">
+            <div class="card-body">
+              <div class="icon mb-3">💊</div>
+              <h5>Gestión de Medicamentos</h5>
+              <p>Control de inventario y suministro de fármacos.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Servicio 2 -->
+        <div class="col-md-4 mb-4">
+          <div class="card service-card">
+            <div class="card-body">
+              <div class="icon mb-3">🩺</div>
+              <h5>Registro de Visitas</h5>
+              <p>Historial de consultas médicas por paciente y médico.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Servicio 3 -->
+        <div class="col-md-4 mb-4">
+          <div class="card service-card">
+            <div class="card-body">
+              <div class="icon mb-3">📋</div>
+              <h5>Reportes y Consultas</h5>
+              <p>Generación de reportes por fecha, médico o paciente.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Registro de Paciente -->
+  <section id="registro" class="py-5" style="background-color: var(--azul-claro);">
+    <div class="container">
+      <div class="row justify-content-center mb-4">
+        <div class="col-12 text-center">
+          <h2 class="text-uppercase" style="color: var(--azul-oscuro);">Registrar Paciente</h2>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card registro-card">
+            <div class="card-header">Formulario de Paciente</div>
+            <div class="card-body">
+              <form method="POST" action="/pacientes">
+                <div class="form-group">
+                  <label for="nombre">Nombre</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Ej. Ana Pérez"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="cedula">Cédula</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cedula"
+                    name="cedula"
+                    placeholder="000-0000000-0"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="carnet">Carnet</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="carnet"
+                    name="carnet"
+                    placeholder="Ej. STU001"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="tipo_paciente">Tipo de Paciente</label>
+                  <select class="form-control" id="tipo_paciente" name="tipo_paciente" required>
+                    <option>Estudiante</option>
+                    <option>Empleado</option>
+                    <option>Profesor</option>
+                    <option>Otro</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-primary-custom">
+                  Guardar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Dispensario APEC</h5>
+          <p>Dirección: Av. Universidad #123, Santo Domingo</p>
+          <p>Teléfono: +1 (809) 555-1234</p>
+          <p>Email: contacto@dispensarioapec.do</p>
+        </div>
+        <div class="col-md-6 text-md-right">
+          <h5>Enlaces Rápidos</h5>
+          <ul class="list-unstyled">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#registro">Registrar Paciente</a></li>
+            <li><a href="login">Login</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr style="background-color: rgba(255,255,255,0.2);" />
+      <div class="text-center">
+        <small>&copy; 2025 Dispensario APEC. Todos los derechos reservados.</small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts de Bootstrap 4 -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
