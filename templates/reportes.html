@@ -1,0 +1,156 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h4>Reportes y Estadísticas</h4>
+  
+  <!-- Estadísticas generales -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-white bg-primary">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5 class="card-title">Pacientes</h5>
+              <h2>{{ total_pacientes }}</h2>
+            </div>
+            <div class="align-self-center">
+              <i class="bi bi-people" style="font-size: 2rem;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-success">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5 class="card-title">Médicos</h5>
+              <h2>{{ total_medicos }}</h2>
+            </div>
+            <div class="align-self-center">
+              <i class="bi bi-person-badge" style="font-size: 2rem;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-warning">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5 class="card-title">Medicamentos</h5>
+              <h2>{{ total_medicamentos }}</h2>
+            </div>
+            <div class="align-self-center">
+              <i class="bi bi-capsule" style="font-size: 2rem;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-info">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5 class="card-title">Visitas Totales</h5>
+              <h2>{{ total_visitas }}</h2>
+            </div>
+            <div class="align-self-center">
+              <i class="bi bi-calendar-check" style="font-size: 2rem;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráfico de visitas por mes -->
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5>Visitas por Mes (Últimos 6 meses)</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="visitasChart" width="400" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h5>Acciones Rápidas</h5>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            <a href="{{ url_for('visitas') }}" class="list-group-item list-group-item-action">
+              <i class="bi bi-plus-circle"></i> Registrar Nueva Visita
+            </a>
+            <a href="{{ url_for('pacientes') }}" class="list-group-item list-group-item-action">
+              <i class="bi bi-person-plus"></i> Agregar Paciente
+            </a>
+            <a href="{{ url_for('medicamentos') }}" class="list-group-item list-group-item-action">
+              <i class="bi bi-capsule-pill"></i> Gestionar Medicamentos
+            </a>
+            <a href="{{ url_for('consultas') }}" class="list-group-item list-group-item-action">
+              <i class="bi bi-search"></i> Consultar Visitas
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Datos para el gráfico
+  const visitasData = {
+    labels: [
+      {% for visita in visitas_por_mes %}
+        '{{ visita.mes }}/{{ visita.año }}'{% if not loop.last %},{% endif %}
+      {% endfor %}
+    ],
+    datasets: [{
+      label: 'Visitas',
+      data: [
+        {% for visita in visitas_por_mes %}
+          {{ visita.total }}{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ],
+      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 2,
+      fill: true
+    }]
+  };
+
+  // Configuración del gráfico
+  const config = {
+    type: 'line',
+    data: visitasData,
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Tendencia de Visitas Médicas'
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+
+  // Crear el gráfico
+  const ctx = document.getElementById('visitasChart').getContext('2d');
+  const visitasChart = new Chart(ctx, config);
+</script>
+{% endblock %}

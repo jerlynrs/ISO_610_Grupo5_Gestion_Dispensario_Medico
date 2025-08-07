@@ -1,18 +1,18 @@
 {% extends 'base_dashboard.html' %}
 {% block content %}
 <div class="container mt-4">
-  <h4>Editar Tipo de Fármaco</h4>
+  <h4>Editar Marca</h4>
   
   <div class="card">
     <div class="card-body">
-      <form method="POST" action="{{ url_for('actualizar_tipo_farmaco', id=tipo.id) }}">
+      <form method="POST" action="{{ url_for('actualizar_marca', id=marca.id) }}">
         <div class="form-group">
           <label for="descripcion">Descripción</label>
-          <input type="text" class="form-control" name="descripcion" value="{{ tipo.descripcion }}" required>
+          <input type="text" class="form-control" name="descripcion" value="{{ marca.descripcion }}" required>
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-primary">Actualizar</button>
-          <a href="{{ url_for('tipos_farmacos') }}" class="btn btn-secondary">Cancelar</a>
+          <a href="{{ url_for('marcas') }}" class="btn btn-secondary">Cancelar</a>
         </div>
       </form>
     </div>

@@ -1,0 +1,33 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h4>Editar Ubicación</h4>
+  
+  <div class="card">
+    <div class="card-body">
+      <form method="POST" action="{{ url_for('actualizar_ubicacion', id=ubicacion.id) }}">
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <input type="text" class="form-control" name="descripcion" value="{{ ubicacion.descripcion }}" required>
+        </div>
+        <div class="form-group">
+          <label for="estante">Estante</label>
+          <input type="text" class="form-control" name="estante" value="{{ ubicacion.estante }}" required>
+        </div>
+        <div class="form-group">
+          <label for="tramo">Tramo</label>
+          <input type="text" class="form-control" name="tramo" value="{{ ubicacion.tramo }}" required>
+        </div>
+        <div class="form-group">
+          <label for="celda">Celda</label>
+          <input type="text" class="form-control" name="celda" value="{{ ubicacion.celda }}" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Actualizar</button>
+          <a href="{{ url_for('ubicaciones') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

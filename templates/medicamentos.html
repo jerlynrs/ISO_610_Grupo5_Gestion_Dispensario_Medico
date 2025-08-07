@@ -1,0 +1,110 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Gestión de Medicamentos</h4>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#crearModal">Nuevo Medicamento</button>
+  </div>
+
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Descripción</th>
+        <th>Tipo Fármaco</th>
+        <th>Marca</th>
+        <th>Ubicación</th>
+        <th>Dosis</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for medicamento in medicamentos %}
+        <tr>
+          <td>{{ medicamento.id }}</td>
+          <td>{{ medicamento.descripcion }}</td>
+          <td>
+            {% for tipo in tipos_farmacos %}
+              {% if tipo.id == medicamento.tipo_farmaco_id %}{{ tipo.descripcion }}{% endif %}
+            {% endfor %}
+          </td>
+          <td>
+            {% for marca in marcas %}
+              {% if marca.id == medicamento.marca_id %}{{ marca.descripcion }}{% endif %}
+            {% endfor %}
+          </td>
+          <td>
+            {% for ubicacion in ubicaciones %}
+              {% if ubicacion.id == medicamento.ubicacion_id %}{{ ubicacion.descripcion }}{% endif %}
+            {% endfor %}
+          </td>
+          <td>{{ medicamento.dosis }}</td>
+          <td>{{ 'Activo' if medicamento.estado else 'Inactivo' }}</td>
+          <td>
+            <a href="{{ url_for('editar_medicamento', id=medicamento.id) }}" class="btn btn-sm btn-warning">Editar</a>
+            <a href="{{ url_for('eliminar_medicamento', id=medicamento.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que deseas eliminarlo?')">Eliminar</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Crear -->
+<div class="modal fade" id="crearModal" tabindex="-1" role="dialog" aria-labelledby="crearModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="POST" action="{{ url_for('crear_medicamento') }}">
+        <div class="modal-header">
+          <h5 class="modal-title">Nuevo Medicamento</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <input type="text" class="form-control" name="descripcion" required>
+          </div>
+          <div class="form-group">
+            <label for="tipo_farmaco_id">Tipo de Fármaco</label>
+            <select class="form-control" name="tipo_farmaco_id" required>
+              <option value="">Seleccionar...</option>
+              {% for tipo in tipos_farmacos %}
+                <option value="{{ tipo.id }}">{{ tipo.descripcion }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="marca_id">Marca</label>
+            <select class="form-control" name="marca_id" required>
+              <option value="">Seleccionar...</option>
+              {% for marca in marcas %}
+                <option value="{{ marca.id }}">{{ marca.descripcion }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ubicacion_id">Ubicación</label>
+            <select class="form-control" name="ubicacion_id" required>
+              <option value="">Seleccionar...</option>
+              {% for ubicacion in ubicaciones %}
+                <option value="{{ ubicacion.id }}">{{ ubicacion.descripcion }} ({{ ubicacion.estante }}-{{ ubicacion.tramo }}-{{ ubicacion.celda }})</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="dosis">Dosis</label>
+            <input type="text" class="form-control" name="dosis" placeholder="Ej: 500mg" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

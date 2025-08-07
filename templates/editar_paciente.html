@@ -1,0 +1,38 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h4>Editar Paciente</h4>
+  
+  <div class="card">
+    <div class="card-body">
+      <form method="POST" action="{{ url_for('actualizar_paciente', id=paciente.id) }}">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" class="form-control" name="nombre" value="{{ paciente.nombre }}" required>
+        </div>
+        <div class="form-group">
+          <label for="cedula">Cédula</label>
+          <input type="text" class="form-control" name="cedula" value="{{ paciente.cedula }}" required>
+        </div>
+        <div class="form-group">
+          <label for="carnet">Carnet</label>
+          <input type="text" class="form-control" name="carnet" value="{{ paciente.carnet }}">
+        </div>
+        <div class="form-group">
+          <label for="tipo_paciente">Tipo de Paciente</label>
+          <select class="form-control" name="tipo_paciente" required>
+            <option value="Estudiante" {% if paciente.tipo_paciente == 'Estudiante' %}selected{% endif %}>Estudiante</option>
+            <option value="Empleado" {% if paciente.tipo_paciente == 'Empleado' %}selected{% endif %}>Empleado</option>
+            <option value="Profesor" {% if paciente.tipo_paciente == 'Profesor' %}selected{% endif %}>Profesor</option>
+            <option value="Otro" {% if paciente.tipo_paciente == 'Otro' %}selected{% endif %}>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Actualizar</button>
+          <a href="{{ url_for('pacientes') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

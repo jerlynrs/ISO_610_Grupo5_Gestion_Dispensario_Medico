@@ -159,20 +159,6 @@ def actualizar_marca(id):
 
 # UBICACIONES
 @app.route('/ubicaciones')
-def listar_ubicaciones():
-    ubicaciones = Ubicacion.query.all()
-    return jsonify([{
-        "id": u.id,
-        "descripcion": u.descripcion,
-        "estante": u.estante,
-        "tramo": u.tramo,
-        "celda": u.celda,
-        "estado": u.estado
-    } for u in ubicaciones])
-
-
-# UBICACIONES - GESTIÓN COMPLETA
-@app.route('/ubicaciones')
 def ubicaciones():
     if 'usuario' not in session:
         return redirect(url_for('login'))
@@ -223,10 +209,96 @@ def actualizar_ubicacion(id):
     flash('Ubicación actualizada correctamente.')
     return redirect(url_for('ubicaciones'))
 
+@app.route('/api/ubicaciones')
+def api_ubicaciones():
+    ubicaciones = Ubicacion.query.all()
+    return jsonify([{
+        "id": u.id,
+        "descripcion": u.descripcion,
+        "estante": u.estante,
+        "tramo": u.tramo,
+        "celda": u.celda,
+        "estado": u.estado
+    } for u in ubicaciones])
 
 # MEDICAMENTOS
 @app.route('/medicamentos')
-def listar_medicamentos():
+def medicamentos():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    medicamentos = Medicamento.query.all()
+    tipos_farmacos = TipoFarmaco.query.filter_by(estado=True).all()
+    marcas = Marca.query.filter_by(estado=True).all()
+    ubicaciones = Ubicacion.query.filter_by(estado=True).all()
+    return render_template('medicamentos.html', 
+                         medicamentos=medicamentos,
+                         tipos_farmacos=tipos_farmacos,
+                         marcas=marcas,
+                         ubicaciones=ubicaciones)
+
+@app.route('/medicamentos/crear', methods=['POST'])
+def crear_medicamento():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    descripcion = request.form['descripcion']
+    tipo_farmaco_id = request.form['tipo_farmaco_id']
+    marca_id = request.form['marca_id']
+    ubicacion_id = request.form['ubicacion_id']
+    dosis = request.form['dosis']
+    
+    nuevo = Medicamento(
+        descripcion=descripcion,
+        tipo_farmaco_id=tipo_farmaco_id,
+        marca_id=marca_id,
+        ubicacion_id=ubicacion_id,
+        dosis=dosis,
+        estado=True
+    )
+    db.session.add(nuevo)
+    db.session.commit()
+    flash('Medicamento creado correctamente.')
+    return redirect(url_for('medicamentos'))
+
+@app.route('/medicamentos/eliminar/<int:id>')
+def eliminar_medicamento(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    medicamento = Medicamento.query.get_or_404(id)
+    medicamento.estado = False
+    db.session.commit()
+    flash('Medicamento eliminado.')
+    return redirect(url_for('medicamentos'))
+
+@app.route('/medicamentos/editar/<int:id>')
+def editar_medicamento(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    medicamento = Medicamento.query.get_or_404(id)
+    tipos_farmacos = TipoFarmaco.query.filter_by(estado=True).all()
+    marcas = Marca.query.filter_by(estado=True).all()
+    ubicaciones = Ubicacion.query.filter_by(estado=True).all()
+    return render_template('editar_medicamento.html', 
+                         medicamento=medicamento,
+                         tipos_farmacos=tipos_farmacos,
+                         marcas=marcas,
+                         ubicaciones=ubicaciones)
+
+@app.route('/medicamentos/actualizar/<int:id>', methods=['POST'])
+def actualizar_medicamento(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    medicamento = Medicamento.query.get_or_404(id)
+    medicamento.descripcion = request.form['descripcion']
+    medicamento.tipo_farmaco_id = request.form['tipo_farmaco_id']
+    medicamento.marca_id = request.form['marca_id']
+    medicamento.ubicacion_id = request.form['ubicacion_id']
+    medicamento.dosis = request.form['dosis']
+    db.session.commit()
+    flash('Medicamento actualizado correctamente.')
+    return redirect(url_for('medicamentos'))
+
+@app.route('/api/medicamentos')
+def api_medicamentos():
     medicamentos = Medicamento.query.all()
     return jsonify([{
         "id": m.id,
@@ -240,7 +312,65 @@ def listar_medicamentos():
 
 # PACIENTES
 @app.route('/pacientes')
-def listar_pacientes():
+def pacientes():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    pacientes = Paciente.query.all()
+    return render_template('pacientes.html', pacientes=pacientes)
+
+@app.route('/pacientes/crear', methods=['POST'])
+def crear_paciente_dashboard():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    nombre = request.form['nombre']
+    cedula = request.form['cedula']
+    carnet = request.form['carnet']
+    tipo_paciente = request.form['tipo_paciente']
+    
+    nuevo = Paciente(
+        nombre=nombre,
+        cedula=cedula,
+        carnet=carnet,
+        tipo_paciente=tipo_paciente,
+        estado=True
+    )
+    db.session.add(nuevo)
+    db.session.commit()
+    flash('Paciente creado correctamente.')
+    return redirect(url_for('pacientes'))
+
+@app.route('/pacientes/eliminar/<int:id>')
+def eliminar_paciente(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    paciente = Paciente.query.get_or_404(id)
+    paciente.estado = False
+    db.session.commit()
+    flash('Paciente eliminado.')
+    return redirect(url_for('pacientes'))
+
+@app.route('/pacientes/editar/<int:id>')
+def editar_paciente(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    paciente = Paciente.query.get_or_404(id)
+    return render_template('editar_paciente.html', paciente=paciente)
+
+@app.route('/pacientes/actualizar/<int:id>', methods=['POST'])
+def actualizar_paciente(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    paciente = Paciente.query.get_or_404(id)
+    paciente.nombre = request.form['nombre']
+    paciente.cedula = request.form['cedula']
+    paciente.carnet = request.form['carnet']
+    paciente.tipo_paciente = request.form['tipo_paciente']
+    db.session.commit()
+    flash('Paciente actualizado correctamente.')
+    return redirect(url_for('pacientes'))
+
+@app.route('/api/pacientes')
+def api_pacientes():
     pacientes = Paciente.query.all()
     return jsonify([{
         "id": p.id,
@@ -251,14 +381,67 @@ def listar_pacientes():
         "estado": p.estado
     } for p in pacientes])
 
-@app.route('/form_paciente', methods=['GET'])
-def form_paciente():
-    return render_template('crear_paciente.html')
-
-
 # MÉDICOS
 @app.route('/medicos')
-def listar_medicos():
+def medicos():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    medicos = Medico.query.all()
+    return render_template('medicos.html', medicos=medicos)
+
+@app.route('/medicos/crear', methods=['POST'])
+def crear_medico():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    nombre = request.form['nombre']
+    cedula = request.form['cedula']
+    tanda = request.form['tanda']
+    especialidad = request.form['especialidad']
+    
+    nuevo = Medico(
+        nombre=nombre,
+        cedula=cedula,
+        tanda=tanda,
+        especialidad=especialidad,
+        estado=True
+    )
+    db.session.add(nuevo)
+    db.session.commit()
+    flash('Médico creado correctamente.')
+    return redirect(url_for('medicos'))
+
+@app.route('/medicos/eliminar/<int:id>')
+def eliminar_medico(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    medico = Medico.query.get_or_404(id)
+    medico.estado = False
+    db.session.commit()
+    flash('Médico eliminado.')
+    return redirect(url_for('medicos'))
+
+@app.route('/medicos/editar/<int:id>')
+def editar_medico(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    medico = Medico.query.get_or_404(id)
+    return render_template('editar_medico.html', medico=medico)
+
+@app.route('/medicos/actualizar/<int:id>', methods=['POST'])
+def actualizar_medico(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    medico = Medico.query.get_or_404(id)
+    medico.nombre = request.form['nombre']
+    medico.cedula = request.form['cedula']
+    medico.tanda = request.form['tanda']
+    medico.especialidad = request.form['especialidad']
+    db.session.commit()
+    flash('Médico actualizado correctamente.')
+    return redirect(url_for('medicos'))
+
+@app.route('/api/medicos')
+def api_medicos():
     medicos = Medico.query.all()
     return jsonify([{
         "id": m.id,
@@ -271,20 +454,200 @@ def listar_medicos():
 
 # VISITAS
 @app.route('/visitas')
-def listar_visitas():
+def visitas():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    visitas = db.session.query(Visita, Paciente, Medico, Medicamento).join(
+        Paciente, Visita.paciente_id == Paciente.id
+    ).join(
+        Medico, Visita.medico_id == Medico.id
+    ).outerjoin(
+        Medicamento, Visita.medicamento_id == Medicamento.id
+    ).filter(Visita.estado == True).all()
+    
+    pacientes = Paciente.query.filter_by(estado=True).all()
+    medicos = Medico.query.filter_by(estado=True).all()
+    medicamentos = Medicamento.query.filter_by(estado=True).all()
+    
+    return render_template('visitas.html', 
+                         visitas=visitas,
+                         pacientes=pacientes,
+                         medicos=medicos,
+                         medicamentos=medicamentos)
+
+@app.route('/visitas/crear', methods=['POST'])
+def crear_visita():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    
+    from datetime import datetime
+    
+    medico_id = request.form['medico_id']
+    paciente_id = request.form['paciente_id']
+    fecha = datetime.strptime(request.form['fecha'], '%Y-%m-%d').date()
+    hora = datetime.strptime(request.form['hora'], '%H:%M').time()
+    sintomas = request.form['sintomas']
+    medicamento_id = request.form.get('medicamento_id') or None
+    recomendaciones = request.form['recomendaciones']
+    
+    nueva = Visita(
+        medico_id=medico_id,
+        paciente_id=paciente_id,
+        fecha=fecha,
+        hora=hora,
+        sintomas=sintomas,
+        medicamento_id=medicamento_id,
+        recomendaciones=recomendaciones,
+        estado=True
+    )
+    db.session.add(nueva)
+    db.session.commit()
+    flash('Visita registrada correctamente.')
+    return redirect(url_for('visitas'))
+
+@app.route('/visitas/eliminar/<int:id>')
+def eliminar_visita(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    visita = Visita.query.get_or_404(id)
+    visita.estado = False
+    db.session.commit()
+    flash('Visita eliminada.')
+    return redirect(url_for('visitas'))
+
+@app.route('/visitas/editar/<int:id>')
+def editar_visita(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    visita = Visita.query.get_or_404(id)
+    pacientes = Paciente.query.filter_by(estado=True).all()
+    medicos = Medico.query.filter_by(estado=True).all()
+    medicamentos = Medicamento.query.filter_by(estado=True).all()
+    return render_template('editar_visita.html', 
+                         visita=visita,
+                         pacientes=pacientes,
+                         medicos=medicos,
+                         medicamentos=medicamentos)
+
+@app.route('/visitas/actualizar/<int:id>', methods=['POST'])
+def actualizar_visita(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    
+    from datetime import datetime
+    
+    visita = Visita.query.get_or_404(id)
+    visita.medico_id = request.form['medico_id']
+    visita.paciente_id = request.form['paciente_id']
+    visita.fecha = datetime.strptime(request.form['fecha'], '%Y-%m-%d').date()
+    visita.hora = datetime.strptime(request.form['hora'], '%H:%M').time()
+    visita.sintomas = request.form['sintomas']
+    visita.medicamento_id = request.form.get('medicamento_id') or None
+    visita.recomendaciones = request.form['recomendaciones']
+    db.session.commit()
+    flash('Visita actualizada correctamente.')
+    return redirect(url_for('visitas'))
+
+# CONSULTAS POR CRITERIOS
+@app.route('/consultas')
+def consultas():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    
+    # Obtener parámetros de búsqueda
+    paciente_nombre = request.args.get('paciente_nombre', '')
+    medico_nombre = request.args.get('medico_nombre', '')
+    fecha_desde = request.args.get('fecha_desde', '')
+    fecha_hasta = request.args.get('fecha_hasta', '')
+    
+    # Construir consulta base
+    query = db.session.query(Visita, Paciente, Medico, Medicamento).join(
+        Paciente, Visita.paciente_id == Paciente.id
+    ).join(
+        Medico, Visita.medico_id == Medico.id
+    ).outerjoin(
+        Medicamento, Visita.medicamento_id == Medicamento.id
+    ).filter(Visita.estado == True)
+    
+    # Aplicar filtros
+    if paciente_nombre:
+        query = query.filter(Paciente.nombre.ilike(f'%{paciente_nombre}%'))
+    
+    if medico_nombre:
+        query = query.filter(Medico.nombre.ilike(f'%{medico_nombre}%'))
+    
+    if fecha_desde:
+        from datetime import datetime
+        fecha_desde_obj = datetime.strptime(fecha_desde, '%Y-%m-%d').date()
+        query = query.filter(Visita.fecha >= fecha_desde_obj)
+    
+    if fecha_hasta:
+        from datetime import datetime
+        fecha_hasta_obj = datetime.strptime(fecha_hasta, '%Y-%m-%d').date()
+        query = query.filter(Visita.fecha <= fecha_hasta_obj)
+    
+    resultados = query.all()
+    
+    return render_template('consultas.html', 
+                         resultados=resultados,
+                         paciente_nombre=paciente_nombre,
+                         medico_nombre=medico_nombre,
+                         fecha_desde=fecha_desde,
+                         fecha_hasta=fecha_hasta)
+
+@app.route('/api/visitas')
+def api_visitas():
     visitas = Visita.query.all()
     return jsonify([{
         "id": v.id,
         "medico_id": v.medico_id,
         "paciente_id": v.paciente_id,
-        "fecha": v.fecha.strftime('%Y-%m-%d'),
-        "hora": v.hora.strftime('%H:%M'),
+        "fecha": v.fecha.strftime('%Y-%m-%d') if v.fecha else None,
+        "hora": v.hora.strftime('%H:%M') if v.hora else None,
         "sintomas": v.sintomas,
         "medicamento_id": v.medicamento_id,
         "recomendaciones": v.recomendaciones,
         "estado": v.estado
     } for v in visitas])
 
+# REPORTES
+@app.route('/reportes')
+def reportes():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    
+    # Estadísticas básicas
+    total_pacientes = Paciente.query.filter_by(estado=True).count()
+    total_medicos = Medico.query.filter_by(estado=True).count()
+    total_medicamentos = Medicamento.query.filter_by(estado=True).count()
+    total_visitas = Visita.query.filter_by(estado=True).count()
+    
+    # Visitas por mes (últimos 6 meses)
+    from datetime import datetime, timedelta
+    from sqlalchemy import func, extract
+    
+    hace_6_meses = datetime.now() - timedelta(days=180)
+    visitas_por_mes = db.session.query(
+        extract('month', Visita.fecha).label('mes'),
+        extract('year', Visita.fecha).label('año'),
+        func.count(Visita.id).label('total')
+    ).filter(
+        Visita.fecha >= hace_6_meses,
+        Visita.estado == True
+    ).group_by(
+        extract('year', Visita.fecha),
+        extract('month', Visita.fecha)
+    ).order_by(
+        extract('year', Visita.fecha),
+        extract('month', Visita.fecha)
+    ).all()
+    
+    return render_template('reportes.html',
+                         total_pacientes=total_pacientes,
+                         total_medicos=total_medicos,
+                         total_medicamentos=total_medicamentos,
+                         total_visitas=total_visitas,
+                         visitas_por_mes=visitas_por_mes)
 
 
 
@@ -431,8 +794,6 @@ def actualizar_tipo_farmaco(id):
     db.session.commit()
     flash('Tipo de fármaco actualizado.')
     return redirect(url_for('tipos_farmacos'))
-
-
 
 if __name__ == '__main__':
     with app.app_context():

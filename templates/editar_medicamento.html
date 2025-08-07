@@ -1,0 +1,55 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h4>Editar Medicamento</h4>
+  
+  <div class="card">
+    <div class="card-body">
+      <form method="POST" action="{{ url_for('actualizar_medicamento', id=medicamento.id) }}">
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <input type="text" class="form-control" name="descripcion" value="{{ medicamento.descripcion }}" required>
+        </div>
+        <div class="form-group">
+          <label for="tipo_farmaco_id">Tipo de Fármaco</label>
+          <select class="form-control" name="tipo_farmaco_id" required>
+            {% for tipo in tipos_farmacos %}
+              <option value="{{ tipo.id }}" {% if tipo.id == medicamento.tipo_farmaco_id %}selected{% endif %}>
+                {{ tipo.descripcion }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="marca_id">Marca</label>
+          <select class="form-control" name="marca_id" required>
+            {% for marca in marcas %}
+              <option value="{{ marca.id }}" {% if marca.id == medicamento.marca_id %}selected{% endif %}>
+                {{ marca.descripcion }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ubicacion_id">Ubicación</label>
+          <select class="form-control" name="ubicacion_id" required>
+            {% for ubicacion in ubicaciones %}
+              <option value="{{ ubicacion.id }}" {% if ubicacion.id == medicamento.ubicacion_id %}selected{% endif %}>
+                {{ ubicacion.descripcion }} ({{ ubicacion.estante }}-{{ ubicacion.tramo }}-{{ ubicacion.celda }})
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="dosis">Dosis</label>
+          <input type="text" class="form-control" name="dosis" value="{{ medicamento.dosis }}" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Actualizar</button>
+          <a href="{{ url_for('medicamentos') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

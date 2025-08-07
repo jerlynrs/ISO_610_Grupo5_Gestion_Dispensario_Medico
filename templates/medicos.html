@@ -1,0 +1,82 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Gestión de Médicos</h4>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#crearModal">Nuevo Médico</button>
+  </div>
+
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Cédula</th>
+        <th>Tanda</th>
+        <th>Especialidad</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for medico in medicos %}
+        <tr>
+          <td>{{ medico.id }}</td>
+          <td>{{ medico.nombre }}</td>
+          <td>{{ medico.cedula }}</td>
+          <td>{{ medico.tanda }}</td>
+          <td>{{ medico.especialidad }}</td>
+          <td>{{ 'Activo' if medico.estado else 'Inactivo' }}</td>
+          <td>
+            <a href="{{ url_for('editar_medico', id=medico.id) }}" class="btn btn-sm btn-warning">Editar</a>
+            <a href="{{ url_for('eliminar_medico', id=medico.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que deseas eliminarlo?')">Eliminar</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Crear -->
+<div class="modal fade" id="crearModal" tabindex="-1" role="dialog" aria-labelledby="crearModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="POST" action="{{ url_for('crear_medico') }}">
+        <div class="modal-header">
+          <h5 class="modal-title">Nuevo Médico</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" name="nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="cedula">Cédula</label>
+            <input type="text" class="form-control" name="cedula" placeholder="000-0000000-0" required>
+          </div>
+          <div class="form-group">
+            <label for="tanda">Tanda</label>
+            <select class="form-control" name="tanda" required>
+              <option value="">Seleccionar...</option>
+              <option value="Matutina">Matutina</option>
+              <option value="Vespertina">Vespertina</option>
+              <option value="Nocturna">Nocturna</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="especialidad">Especialidad</label>
+            <input type="text" class="form-control" name="especialidad" placeholder="Ej: Medicina General" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
