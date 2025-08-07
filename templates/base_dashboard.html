@@ -1,0 +1,60 @@
+<!-- base_dashboard.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de Control - Dispensario APEC</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+</head>
+<body>
+  <div class="d-flex" id="wrapper">
+    <!-- Sidebar -->
+    <div class="bg-dark border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading text-white text-center py-4">
+        <img src="{{ url_for('static', filename='imagenes/logo-unapec_color.png') }}" alt="Logo UNAPEC" width="120">
+        <h6 class="mt-2">Dispensario Médico</h6>
+      </div>
+      <div class="list-group list-group-flush">
+        <a href="{{ url_for('dashboard') }}" class="list-group-item list-group-item-action bg-dark text-white"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a href="{{ url_for('tipos_farmacos') }}" class="list-group-item list-group-item-action bg-dark text-white">Tipos de Fármacos</a>
+        <a href="{{ url_for('marcas') }}" class="list-group-item list-group-item-action bg-dark text-white">Marcas</a>
+       <a href="{{ url_for('listar_ubicaciones') }}" class="list-group-item list-group-item-action bg-dark text-white">Ubicaciones</a>
+
+        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Medicamentos</a>
+        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Pacientes</a>
+        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Médicos</a>
+        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Visitas</a>
+        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Consultas</a>
+        <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Reportes</a>
+        <a href="/logout" class="list-group-item list-group-item-action bg-dark text-danger">Cerrar Sesión</a>
+      </div>
+    </div>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="btn btn-primary" id="menu-toggle">☰</button>
+        <div class="ml-auto d-flex align-items-center">
+          <span class="mr-3 text-muted">Administrador</span>
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="35" alt="admin" class="rounded-circle">
+        </div>
+      </nav>
+
+      <!-- CONTENIDO VARIABLE -->
+      <div class="container-fluid mt-4">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+      document.getElementById("wrapper").classList.toggle("toggled");
+    });
+  </script>
+</body>
+</html>

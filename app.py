@@ -102,16 +102,60 @@ class Usuario(db.Model):
 def index():
     return render_template('index.html')
 
-@app.route('/tipos_farmacos')
-def listar_tipos():
+@app.route('/api/tipos_farmacos')
+def api_tipos_farmacos():
     tipos = TipoFarmaco.query.all()
     return jsonify([{"id": t.id, "descripcion": t.descripcion, "estado": t.estado} for t in tipos])
 
+
 # MARCAS
+
 @app.route('/marcas')
-def listar_marcas():
+def marcas():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
     marcas = Marca.query.all()
-    return jsonify([{"id": m.id, "descripcion": m.descripcion, "estado": m.estado} for m in marcas])
+    return render_template('marcas.html', marcas=marcas)
+
+@app.route('/marcas/crear', methods=['POST'])
+def crear_marca():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    descripcion = request.form['descripcion']
+    nueva = Marca(descripcion=descripcion, estado=True)
+    db.session.add(nueva)
+    db.session.commit()
+    flash('Marca creada correctamente.')
+    return redirect(url_for('marcas'))
+
+@app.route('/marcas/eliminar/<int:id>')
+def eliminar_marca(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    marca = Marca.query.get_or_404(id)
+    marca.estado = False
+    db.session.commit()
+    flash('Marca eliminada.')
+    return redirect(url_for('marcas'))
+
+@app.route('/marcas/editar/<int:id>')
+def editar_marca(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    marca = Marca.query.get_or_404(id)
+    return render_template('editar_marca.html', marca=marca)
+
+@app.route('/marcas/actualizar/<int:id>', methods=['POST'])
+def actualizar_marca(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    marca = Marca.query.get_or_404(id)
+    marca.descripcion = request.form['descripcion']
+    db.session.commit()
+    flash('Marca actualizada correctamente.')
+    return redirect(url_for('marcas'))
+
+
 
 # UBICACIONES
 @app.route('/ubicaciones')
@@ -125,6 +169,60 @@ def listar_ubicaciones():
         "celda": u.celda,
         "estado": u.estado
     } for u in ubicaciones])
+
+
+# UBICACIONES - GESTIÓN COMPLETA
+@app.route('/ubicaciones')
+def ubicaciones():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    ubicaciones = Ubicacion.query.all()
+    return render_template('ubicaciones.html', ubicaciones=ubicaciones)
+
+@app.route('/ubicaciones/crear', methods=['POST'])
+def crear_ubicacion():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    descripcion = request.form['descripcion']
+    estante = request.form['estante']
+    tramo = request.form['tramo']
+    celda = request.form['celda']
+    nueva = Ubicacion(descripcion=descripcion, estante=estante, tramo=tramo, celda=celda, estado=True)
+    db.session.add(nueva)
+    db.session.commit()
+    flash('Ubicación creada correctamente.')
+    return redirect(url_for('ubicaciones'))
+
+@app.route('/ubicaciones/eliminar/<int:id>')
+def eliminar_ubicacion(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    ubicacion = Ubicacion.query.get_or_404(id)
+    ubicacion.estado = False
+    db.session.commit()
+    flash('Ubicación eliminada.')
+    return redirect(url_for('ubicaciones'))
+
+@app.route('/ubicaciones/editar/<int:id>')
+def editar_ubicacion(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    ubicacion = Ubicacion.query.get_or_404(id)
+    return render_template('editar_ubicacion.html', ubicacion=ubicacion)
+
+@app.route('/ubicaciones/actualizar/<int:id>', methods=['POST'])
+def actualizar_ubicacion(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    ubicacion = Ubicacion.query.get_or_404(id)
+    ubicacion.descripcion = request.form['descripcion']
+    ubicacion.estante = request.form['estante']
+    ubicacion.tramo = request.form['tramo']
+    ubicacion.celda = request.form['celda']
+    db.session.commit()
+    flash('Ubicación actualizada correctamente.')
+    return redirect(url_for('ubicaciones'))
+
 
 # MEDICAMENTOS
 @app.route('/medicamentos')
@@ -230,7 +328,7 @@ def crear_paciente():
     else:
         return "Paciente registrado correctamente desde el formulario"
 
-
+#login
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -241,17 +339,27 @@ def login():
         user = Usuario.query.filter_by(username=username).first()
         if user and user.check_password(password):
             session['usuario'] = user.username
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard'))  # Redirige al panel
         else:
             return "Credenciales incorrectas. Intenta de nuevo."
 
     return render_template('login.html')
 
 
+
 @app.route('/logout')
 def logout():
     session.pop('usuario', None)
     return redirect(url_for('login'))
+
+
+@app.route('/dashboard')
+def dashboard():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    return render_template('dashboard.html')  # o crea dashboard.html que extienda de base_dashboard
+
+
 
 
 
@@ -273,7 +381,64 @@ def registro_usuario():
 
     return render_template('registro_usuario.html')
 
+from flask import flash
+
+# Ver todos los tipos de fármacos
+@app.route('/tipos_farmacos')
+def tipos_farmacos():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    tipos = TipoFarmaco.query.all()
+    return render_template('tipos_farmacos.html', tipos=tipos)
+# Crear un nuevo tipo
+@app.route('/tipos_farmacos/crear', methods=['POST'])
+def crear_tipo_farmaco():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    descripcion = request.form['descripcion']
+    nuevo_tipo = TipoFarmaco(descripcion=descripcion, estado=True)
+    db.session.add(nuevo_tipo)
+    db.session.commit()
+    flash('Tipo de fármaco creado correctamente.')
+    return redirect(url_for('tipos_farmacos'))
+
+# Eliminar tipo (baja lógica)
+@app.route('/tipos_farmacos/eliminar/<int:id>')
+def eliminar_tipo_farmaco(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    tipo = TipoFarmaco.query.get_or_404(id)
+    tipo.estado = False
+    db.session.commit()
+    flash('Tipo de fármaco eliminado.')
+    return redirect(url_for('tipos_farmacos'))
+
+# Editar tipo (mostrar form)
+@app.route('/tipos_farmacos/editar/<int:id>')
+def editar_tipo_farmaco(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    tipo = TipoFarmaco.query.get_or_404(id)
+    return render_template('editar_tipo_farmaco.html', tipo=tipo)
+
+# Guardar edición
+@app.route('/tipos_farmacos/actualizar/<int:id>', methods=['POST'])
+def actualizar_tipo_farmaco(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    tipo = TipoFarmaco.query.get_or_404(id)
+    tipo.descripcion = request.form['descripcion']
+    db.session.commit()
+    flash('Tipo de fármaco actualizado.')
+    return redirect(url_for('tipos_farmacos'))
+
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
+
+
+

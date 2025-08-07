@@ -1,0 +1,73 @@
+/* dashboard.css */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+}
+
+#wrapper {
+  min-height: 100vh;
+  display: flex;
+}
+
+#sidebar-wrapper {
+  width: 250px;
+  min-height: 100vh;
+  background-color: #1a1a2e;
+}
+
+.sidebar-heading {
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #16213e;
+}
+
+.list-group-item {
+  border: none;
+  transition: 0.2s;
+}
+
+.list-group-item:hover {
+  background-color: #0f3460;
+}
+
+#page-content-wrapper {
+  flex: 1;
+  padding: 0;
+  background-color: #ffffff;
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.jumbotron {
+  background-color: #e3f2fd;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.list-group-item {
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+h5 {
+  font-weight: bold;
+  color: #1a1a2e;
+}
+
+/* Menu Toggle */
+#wrapper.toggled #sidebar-wrapper {
+  margin-left: -250px;
+}

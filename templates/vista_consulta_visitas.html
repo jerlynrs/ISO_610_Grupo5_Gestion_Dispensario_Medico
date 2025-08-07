@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de Visitas - Dispensario APEC</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="mb-4 text-center">Consulta de Visitas por Criterios</h2>
+
+    <form class="mb-4">
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label>Paciente</label>
+          <input type="text" class="form-control" placeholder="Nombre del paciente">
+        </div>
+        <div class="form-group col-md-3">
+          <label>Médico</label>
+          <input type="text" class="form-control" placeholder="Nombre del médico">
+        </div>
+        <div class="form-group col-md-3">
+          <label>Fecha Desde</label>
+          <input type="date" class="form-control">
+        </div>
+        <div class="form-group col-md-3">
+          <label>Fecha Hasta</label>
+          <input type="date" class="form-control">
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit">Buscar</button>
+    </form>
+
+    <table class="table table-striped table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>Fecha</th>
+          <th>Paciente</th>
+          <th>Médico</th>
+          <th>Medicamento</th>
+          <th>Síntomas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2025-07-11</td>
+          <td>Juan Pérez</td>
+          <td>Dra. García</td>
+          <td>Paracetamol</td>
+          <td>Fiebre y dolor de cabeza</td>
+        </tr>
+        <!-- Más resultados -->
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
