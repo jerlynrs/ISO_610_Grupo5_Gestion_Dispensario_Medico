@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Ubicaciones - Dispensario APEC</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="mb-4 text-center">Gestión de Ubicaciones</h2>
+
+    <div class="d-flex justify-content-between mb-3">
+      <button class="btn btn-primary" data-toggle="modal" data-target="#crearModal">
+        <i class="bi bi-plus-circle"></i> Nueva Ubicación
+      </button>
+    </div>
+
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>Descripción</th>
+          <th>Estante</th>
+          <th>Tramo</th>
+          <th>Celda</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Zona A</td>
+          <td>E1</td>
+          <td>T1</td>
+          <td>C1</td>
+          <td><span class="badge badge-success">Activo</span></td>
+          <td>
+            <button class="btn btn-warning btn-sm">Editar</button>
+            <button class="btn btn-danger btn-sm">Eliminar</button>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Zona B</td>
+          <td>E2</td>
+          <td>T2</td>
+          <td>C2</td>
+          <td><span class="badge badge-success">Activo</span></td>
+          <td>
+            <button class="btn btn-warning btn-sm">Editar</button>
+            <button class="btn btn-danger btn-sm">Eliminar</button>
+          </td>
+        </tr>
+        <!-- Más filas de ejemplo -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal Crear Ubicación -->
+  <div class="modal fade" id="crearModal" tabindex="-1" role="dialog" aria-labelledby="crearModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form>
+          <div class="modal-header">
+            <h5 class="modal-title">Nueva Ubicación</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Descripción</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Estante</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Tramo</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Celda</label>
+              <input type="text" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts de Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

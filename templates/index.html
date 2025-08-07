@@ -31,20 +31,44 @@
         <span class="navbar-toggler-icon" style="color: #fff;">☰</span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#servicios">Servicios</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#registro">Registrar Paciente</a>
-          </li>
-          <li>
-            <a class="nav-link" href="login">Login</a>
-          </li>
-        </ul>
+       <ul class="navbar-nav ml-auto">
+  <li class="nav-item active">
+    <a class="nav-link" href="/">Inicio</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#servicios">Servicios</a>
+  </li>
+
+  <li class="nav-item dropdown">
+    <a
+      class="nav-link dropdown-toggle"
+      href="#"
+      id="gestionesDropdown"
+      role="button"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      Módulos de Gestión
+    </a>
+    <div class="dropdown-menu" aria-labelledby="gestionesDropdown">
+      <a class="dropdown-item" href="#">Gestión de Tipos de Fármacos</a>
+      <a class="dropdown-item" href="#">Gestión de Marcas</a>
+      <a class="dropdown-item" href="#">Gestión de Ubicaciones</a>
+      <a class="dropdown-item" href="#">Gestión de Medicamentos</a>
+      <a class="dropdown-item" href="#">Gestión de Pacientes</a>
+      <a class="dropdown-item" href="#">Gestión de Médicos</a>
+      <a class="dropdown-item" href="#">Registro de Visitas</a>
+      <a class="dropdown-item" href="#">Gestión de Consultas</a>
+      <a class="dropdown-item" href="#">Reporte de Visitas</a>
+    </div>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="login">Login</a>
+  </li>
+</ul>
+
       </div>
     </div>
   </nav>
@@ -101,7 +125,7 @@
     </div>
   </section>
 
-  <!-- Registro de Paciente -->
+  <!-- Registro de Paciente
   <section id="registro" class="py-5" style="background-color: var(--azul-claro);">
     <div class="container">
       <div class="row justify-content-center mb-4">
@@ -165,7 +189,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- Footer -->
   <footer class="mt-5">

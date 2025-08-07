@@ -1,0 +1,13 @@
+Usuario: admin
+
+Contraseña: admin123
+
+from flask import flash
+
+# Ver todos los tipos de fármacos
+@app.route('/tipos_farmacos')
+def tipos_farmacos():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    tipos = TipoFarmaco.query.all()
+    return render_template('tipos_farmacos.html', tipos=tipos)

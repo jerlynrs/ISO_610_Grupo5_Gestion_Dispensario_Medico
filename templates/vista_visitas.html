@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Visitas - Dispensario APEC</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="mb-4 text-center">Gestión de Visitas Médicas</h2>
+
+    <div class="d-flex justify-content-between mb-3">
+      <button class="btn btn-primary" data-toggle="modal" data-target="#crearModal">
+        <i class="bi bi-plus-circle"></i> Registrar Visita
+      </button>
+    </div>
+
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>Paciente</th>
+          <th>Médico</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Medicamento</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Juan Pérez</td>
+          <td>Dra. García</td>
+          <td>2025-07-11</td>
+          <td>10:30</td>
+          <td>Paracetamol</td>
+          <td><span class="badge badge-success">Activa</span></td>
+          <td>
+            <button class="btn btn-warning btn-sm">Editar</button>
+            <button class="btn btn-danger btn-sm">Eliminar</button>
+          </td>
+        </tr>
+        <!-- Más visitas aquí -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal Nueva Visita -->
+  <div class="modal fade" id="crearModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form>
+          <div class="modal-header">
+            <h5 class="modal-title">Registrar Visita</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Paciente</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Médico</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Fecha</label>
+              <input type="date" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Hora</label>
+              <input type="time" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Medicamento</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Síntomas</label>
+              <textarea class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Recomendaciones</label>
+              <textarea class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar Visita</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

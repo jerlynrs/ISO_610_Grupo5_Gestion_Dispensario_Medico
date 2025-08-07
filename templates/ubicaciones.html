@@ -1,0 +1,83 @@
+{% extends 'base_dashboard.html' %}
+{% block content %}
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Gestión de Ubicaciones</h4>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#crearModal">Nueva Ubicación</button>
+  </div>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="alert alert-success">{{ messages[0] }}</div>
+    {% endif %}
+  {% endwith %}
+
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Descripción</th>
+        <th>Estante</th>
+        <th>Tramo</th>
+        <th>Celda</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in ubicaciones %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td>{{ u.descripcion }}</td>
+          <td>{{ u.estante }}</td>
+          <td>{{ u.tramo }}</td>
+          <td>{{ u.celda }}</td>
+          <td>{{ 'Activo' if u.estado else 'Inactivo' }}</td>
+          <td>
+            <a href="{{ url_for('editar_ubicacion', id=u.id) }}" class="btn btn-sm btn-warning">Editar</a>
+            <a href="{{ url_for('eliminar_ubicacion', id=u.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que deseas eliminarla?')">Eliminar</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Crear -->
+<div class="modal fade" id="crearModal" tabindex="-1" role="dialog" aria-labelledby="crearModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="POST" action="{{ url_for('crear_ubicacion') }}">
+        <div class="modal-header">
+          <h5 class="modal-title">Nueva Ubicación</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Descripción</label>
+            <input type="text" class="form-control" name="descripcion" required>
+          </div>
+          <div class="form-group">
+            <label>Estante</label>
+            <input type="text" class="form-control" name="estante" required>
+          </div>
+          <div class="form-group">
+            <label>Tramo</label>
+            <input type="text" class="form-control" name="tramo" required>
+          </div>
+          <div class="form-group">
+            <label>Celda</label>
+            <input type="text" class="form-control" name="celda" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
